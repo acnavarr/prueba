@@ -191,6 +191,11 @@ class GeneralComponents(object):
         return web_element.click()
 
     @staticmethod
+    def click_component(context, component_name):
+        web_element = context.browser.find_element(component_name)
+        return web_element.click()
+
+    @staticmethod
     def list_to_string(value, separator=str):
         return separator.join(map(str, value))
 

@@ -54,6 +54,12 @@ def step_impl(context, url):
     return assert_that(context.web_driver.current_url, equal_to(url))
 
 
+@then(u'The url page should be contain to the next "(?P<url>.*)" url')
+def step_impl(context, url):
+    result=GeneralComponents.wait_until_url_contains(context.browser, url)
+    return assert_that(result, equal_to(True))
+
+
 @then(u'The "(?P<element_name>.*)" "(?P<element_type>button)" "('u'?P<expression>should|should 'u'not)" be enabled')
 def step_impl(context, element_name, element_type, expression):
     element_name = transformation_helper(element_name, element_type)

@@ -6,7 +6,7 @@ from lib.pages.homepage import HomePage
 
 def before_all(context):
     driver = set_selenium_driver(context)
-    driver.set_page_load_timeout('0.5')
+    driver.set_page_load_timeout('5')
     driver.maximize_window()
 
     context.web_driver = driver
@@ -22,12 +22,12 @@ def before_all(context):
 
 def after_scenario(context, scenario):
     sep = '\n'
-    steps = []
-    for step in scenario.steps:
-        steps.append(str(step).replace('<', '').replace('>', '').capitalize())
-    if test_rail_report(context) == 'True':
-        validate_scenario(scenario, context, sep.join(steps))
-    pass
+    # steps = []
+    # for step in scenario.steps:
+    #     steps.append(str(step).replace('<', '').replace('>', '').capitalize())
+    # if test_rail_report(context) == 'True':
+    #     validate_scenario(scenario, context, sep.join(steps))
+    # pass
 
 
 def after_all(context):
@@ -63,6 +63,9 @@ def set_local_driver() -> webdriver:
     chrome_options.add_argument("--lang=en-US")
     chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
     chrome_options.add_experimental_option('useAutomationExtension', False)
+    chrome_options.add_experimental_option("prefs", {
+        "profile.default_content_setting_values.geolocation": 2
+    })
     return webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
 

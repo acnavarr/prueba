@@ -102,3 +102,8 @@ class BasePage(object):
             web_element = context.browser.find_elements(selector)
             validation_list.append(len(web_element) > 0)
         return validation_list
+
+
+
+
+

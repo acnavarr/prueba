@@ -56,3 +56,8 @@ def validate_wait_results(*waits):
         else:
             validation_results.append(wait)
     return validation_results
+
+def element_with_value(element,value)-> str:
+    element=(element[0],element[1].format(value))
+    return element
+
