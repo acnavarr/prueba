@@ -29,7 +29,17 @@ Upgrading your `pip` by running:
 
 To execute this project, you must first install the requirements file with the next command:
 
-`python3 -m pip install requirements.txt`
+  python3 -m venv venv; 
+  source venv/bin/activate;
+  pip install -r requirements.txt; 
+
+Execute paralle test:
+
+python behave_parallel.py -t regression
+
+Secuencial test:
+
+behave --no-capture --format plain --tags={@tag} -Ddriver=chrome
 
 Then of install all requirements you can execute the automated tests with the next command:
 

@@ -1,14 +1,21 @@
 from typing import List
+
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
 from lib.helpers.generalhelpers import transformation_to_element_name
 
 
+
+
 class BasePage(object):
+
     def __init__(self, context):
         self.web_driver = context.web_driver
         self.context = context
         self.base_url = self.get_url_per_environment(context)
+
+
+
 
     def delete_all_cookies(self):
         """

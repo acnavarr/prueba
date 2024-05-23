@@ -28,3 +28,7 @@ def step_impl(context, option):
 @when(u'I search "(?P<option>.*)" in the input')
 def step_impl(context, option):
     return context.current_page.text_value_in_the_filter(option)
+
+@when(u'I enter to "(?P<option>.*)" option')
+def step_impl(context, option):
+    return context.current_page.click_in_element_with_value(option)

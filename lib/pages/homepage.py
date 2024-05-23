@@ -1,7 +1,8 @@
 import logging
+from selenium.webdriver.support import expected_conditions as EC
 
 from lib.components.generalcomponents import GeneralComponents
-from lib.helpers.generalhelpers import validate_wait_results
+from lib.helpers.generalhelpers import validate_wait_results, element_with_value
 from lib.pages.basepage import BasePage
 from lib.pages.webelements.homewebelements import HomeWebElements
 
@@ -27,5 +28,11 @@ class HomePage(BasePage):
             GeneralComponents.wait_until_element_is_present(self.context, HomeWebElements.where_label),
             GeneralComponents.wait_until_element_is_present(self.context, HomeWebElements.signin_button))
 
+
     def reload_page(self):
         return self.reload_page()
+
+    def click_in_element_with_value(self,value):
+       element= element_with_value(HomeWebElements.submenu_label,value)
+       GeneralComponents.click_component(self.context,element )
+
