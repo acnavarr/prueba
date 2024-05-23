@@ -1,6 +1,6 @@
 import datetime
 import logging
-import time
+from utils.functions import *
 from datetime import datetime
 
 from selenium.common.exceptions import NoSuchElementException
@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from lib.constants import Constants
 from lib.helpers.generalhelpers import transformation_to_element_name
+from selenium import webdriver
 
 logger = logging.getLogger(__name__)
 
@@ -274,3 +275,11 @@ class GeneralComponents(object):
         component_elements = context.current_page.get_component_elements_per_name(component_name)
         web_element = context.browser.find_element(component_elements.__dict__.get(element_name))
         return web_element.is_displayed()
+
+    @staticmethod
+    def capture(context, name, name_case):
+        image_name = f"{replace_spaces(name)}.png"
+        if not os.path.exists(os.path.join("screenshots", name_case)):
+            os.makedirs(os.path.join("screenshots", name_case))
+        image_location = os.path.join(f"screenshots/{name_case}", image_name)
+        return context.browser.save_screenshot(image_location), image_location

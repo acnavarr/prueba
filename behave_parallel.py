@@ -21,7 +21,7 @@ def parse_arguments():
     parser.add_argument('--feature_list', '-l',
                         help='Please specify file path of features or features location you want to run.')
     parser.add_argument('--feature', '-f', help='Please specify feature you want to run.')
-    parser.add_argument('--processes', '-p', type=int, help='Maximum number of processes. Default = 5', default=6)
+    parser.add_argument('--processes', '-p', type=int, help='Maximum number of processes. Default = 5', default=5)
     parser.add_argument('--tags', '-t', help='Please specify behave tags to run')
     parser.add_argument('--outfile_prefix', '-o', help='Please specify outfile prefix to run')
     return parser.parse_args()
@@ -33,11 +33,10 @@ def _run_parallel_feature(feature):
     :param feature: Feature will be run
     :type feature: str
     """
-    #logger.debug('Processing feature: {}'.format(feature))
-    feature_test_log = feature.replace('/', '-')
-    #cmd = 'behave {feature} --tags ~@sequential>> ~/log/{feature_test_log}.txt'.format(feature=feature, feature_test_log=feature_test_log)
-    cmd =  'behave {feature}'.format(feature=feature)
 
+   # cmd =  'behave {feature}'.format(feature=feature)
+    cmd='behave {feature} -Ddriver=chrome'.format(feature=feature)
+    print(cmd)
     r = call(cmd, shell=True)
     status = 'Passed' if r == 0 else 'Failed'
     print(r,cmd + "_________________________________________________")
@@ -123,6 +122,7 @@ def main():
         out, err = p.communicate()
         #scenarios = json.loads(out.decode())[0]['elements']
         #features = [scenario['location'] for scenario in scenarios]
+
         features=[]
         for i in json.loads(out.decode()):
             scenarios = i['elements']

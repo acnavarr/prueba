@@ -1,4 +1,9 @@
 from selenium.webdriver.remote.webelement import WebElement
+import os
+import configparser
+import shutil
+import tempfile
+import json
 
 
 def validate_text(comparison_type, text_a, text_b):
@@ -61,3 +66,57 @@ def element_with_value(element,value)-> str:
     element=(element[0],element[1].format(value))
     return element
 
+'''Capture images'''
+
+
+def capture(context, name,name_case):
+   image_name=f"{replace_spaces(name)}.png"
+   # image_location = os.path.join("/tmp", image_name)
+   if not os.path.exists(os.path.join("screenshots", name_case)):
+       os.makedirs(os.path.join("screenshots", name_case))
+   image_location = os.path.join(f"screenshots/{name_case}", image_name)
+   return context.browser.save_screenshot(image_location),image_location
+
+
+def replace_spaces(text):
+    return text.replace(" ", "_")
+
+def object_value(value):
+    if not value.isalpha():
+        value = value.split(".")[1]
+    return value
+
+def get_config(section="driver", key=""):
+    config = configparser.RawConfigParser()
+    config.read("setup.cfg")
+    return config.get(section, key)
+
+
+def compress_and_save_to_temp(folder_to_compress,name_zip):
+    try:
+        # Create a temporary file for the compressed archive
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file_path  = os.path.join("/tmp", name_zip)
+        temp_file.close()
+
+        # Compress the folder into the temporary file
+        shutil.make_archive(temp_file_path, 'zip', folder_to_compress)
+
+        # Return the path of the compressed file
+        return temp_file_path + ".zip"
+    except Exception as e:
+        print("Error compressing the folder:", e)
+        return None
+
+def add_attchmen(file):
+    import requests
+    url = "https://api.qase.io/v1/attachment/HNR"
+    files = {"file": (file, open(file, "rb"), "application/zip")}
+    headers = {
+        "accept": "application/json",
+        "Token": "b8c4bdf35b5cede98aa8c0993a5ca21e913c187bd482e4fe2f29b5b16e54a315"
+    }
+    response = requests.post(url, files=files, headers=headers)
+    data = json.loads(response.text)
+    hash_value = str(data["result"][0]["hash"])
+    return hash_value
